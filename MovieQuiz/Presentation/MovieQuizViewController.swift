@@ -6,6 +6,9 @@ final class MovieQuizViewController: UIViewController {
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     
+    @IBOutlet weak var yesButton: UIButton!
+    @IBOutlet weak var noButton: UIButton!
+    
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private var currentQuestion: QuizQuestion?
@@ -97,16 +100,16 @@ final class MovieQuizViewController: UIViewController {
     
     // нажатие кнопки "Да"
     @IBAction private func yesButtonClicked() {
-        if !buttonsLocked { showAnswerResult(answer: true) }
+        showAnswerResult(answer: true)
     }
     
     // нажатие кнопки "Нет"
     @IBAction private func noButtonClicked() {
-        if !buttonsLocked { showAnswerResult(answer: false) }
+        showAnswerResult(answer: false)
     }
     
     private func showAnswerResult(answer: Bool) {
-        buttonsLocked = true // блокируем кнопки на время
+        enableButtons(false) // блокируем кнопки на время
         let isCorrentAnswer = (answer == currentQuestion?.correctAnswer)
         imageView.layer.borderColor = isCorrentAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // меняем цвет рамки
         if isCorrentAnswer { correctAnswers += 1 }
@@ -130,7 +133,7 @@ final class MovieQuizViewController: UIViewController {
             currentQuestion = questions[currentQuestionIndex]
             showQuestion(quiz: convert(model: currentQuestion!))
         }
-        buttonsLocked = false // разблокируем кнопки
+        enableButtons(true) // разблокируем кнопки
     }
     
     // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
@@ -171,5 +174,10 @@ final class MovieQuizViewController: UIViewController {
         alert.addAction(action)
         
         self.present(alert, animated: true, completion: nil)
+    }
+    
+    private func enableButtons(_ enabled: Bool) {
+        yesButton.isEnabled = enabled
+        noButton.isEnabled = enabled
     }
 }
