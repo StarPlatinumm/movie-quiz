@@ -12,10 +12,9 @@ final class MovieQuizViewController: UIViewController {
     private var currentQuestionIndex = 0
     private var correctAnswers = 0
     private var currentQuestion: QuizQuestion?
-    private var buttonsLocked = false // блокирует нажатие кнопок да/нет, если true
     
     // вью модель для состояния "Вопрос показан"
-    struct QuizStepViewModel {
+    private struct QuizStepViewModel {
         // картинка с афишей фильма с типом UIImage
         let image: UIImage
         // вопрос о рейтинге квиза
@@ -25,7 +24,7 @@ final class MovieQuizViewController: UIViewController {
     }
     
     // для состояния "Результат квиза"
-    struct QuizResultsViewModel {
+    private struct QuizResultsViewModel {
       // строка с заголовком алерта
       let title: String
       // строка с текстом о количестве набранных очков
@@ -34,7 +33,7 @@ final class MovieQuizViewController: UIViewController {
       let buttonText: String
     }
     
-    struct QuizQuestion {
+    private struct QuizQuestion {
         // строка с названием фильма, совпадает с названием картинки афиши фильма в Assets
         let image: String
         // строка с вопросом о рейтинге фильма
@@ -176,6 +175,7 @@ final class MovieQuizViewController: UIViewController {
         self.present(alert, animated: true, completion: nil)
     }
     
+    // блокирует нажатие кнопок да/нет
     private func enableButtons(_ enabled: Bool) {
         yesButton.isEnabled = enabled
         noButton.isEnabled = enabled
