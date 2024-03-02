@@ -25,12 +25,12 @@ final class MovieQuizViewController: UIViewController {
     
     // для состояния "Результат квиза"
     private struct QuizResultsViewModel {
-      // строка с заголовком алерта
-      let title: String
-      // строка с текстом о количестве набранных очков
-      let text: String
-      // текст для кнопки алерта
-      let buttonText: String
+        // строка с заголовком алерта
+        let title: String
+        // строка с текстом о количестве набранных очков
+        let text: String
+        // текст для кнопки алерта
+        let buttonText: String
     }
     
     private struct QuizQuestion {
@@ -91,7 +91,7 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.borderColor = UIColor.ypBlack.cgColor // делаем рамку черной (невидимой)
-        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки 
+        imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
         // берём текущий вопрос из массива вопросов по индексу текущего вопроса
         currentQuestion = questions[currentQuestionIndex]
         showQuestion(quiz: convert(model: currentQuestion!))
@@ -112,10 +112,10 @@ final class MovieQuizViewController: UIViewController {
         let isCorrentAnswer = (answer == currentQuestion?.correctAnswer)
         imageView.layer.borderColor = isCorrentAnswer ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor // меняем цвет рамки
         if isCorrentAnswer { correctAnswers += 1 }
-
+        
         // запускаем задачу через 1 секунду c помощью диспетчера задач
         DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-           // код, который мы хотим вызвать через 1 секунду
+            // код, который мы хотим вызвать через 1 секунду
             self.showNextQuestionOrResults()
         }
     }
