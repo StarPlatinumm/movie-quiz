@@ -16,7 +16,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
-    
+    private var statisticService: StatisticServiceProtocol = StatisticServiceImplementation()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -30,6 +30,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         let alertPresenter = AlertPresenter()
         alertPresenter.delegate = self
         self.alertPresenter = alertPresenter
+        
+//        // подключаем StatisticService
+//        statisticService = StatisticServiceImplementation()
 
         // настраиваем рамку картинки
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
@@ -69,19 +72,28 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private func showNextQuestionOrResults() {
         if currentQuestionIndex == questionsAmount - 1 {
             // идём в состояние "Результат квиза"
-            let completion = { [weak self] in
-                guard let self else { return }
-    
-                self.currentQuestionIndex = 0
-                self.correctAnswers = 0
-    
-                questionFactory?.requestNextQuestion()
-            }
+
+            // сохраняем результат
+            statisticService.store(correct: correctAnswers, total: questionsAmount)
+
+            // вызываем алерт
+            let bestGame = statisticService.bestGame
+            let msgCurrentResult = "Ваш результат: \(correctAnswers) из \(questionsAmount)\n"
+            let msgGamesPlayed = "Количество сыгранных квизов: \(statisticService.gamesCount)\n"
+            let msgBestGame = "Рекорд: \(bestGame.correct) из \(bestGame.total) (\(bestGame.date))\n"
+            let msgTotalAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             alertPresenter?.showAlert(alert: Alert(
                 title: "Раунд окончен",
-                message: "Ваш результат: \(correctAnswers) из \(questionsAmount)",
+                message: "\(msgCurrentResult)\n\(msgGamesPlayed)\n\(msgBestGame)\n\(msgTotalAccuracy)",
                 buttonText: "Сыграть ещё раз",
-                completion: completion))
+                completion: { [weak self] in
+                    guard let self else { return }
+        
+                    self.currentQuestionIndex = 0
+                    self.correctAnswers = 0
+        
+                    questionFactory?.requestNextQuestion()
+                }))
         } else {
             currentQuestionIndex += 1
             // идём в состояние "Вопрос показан"
