@@ -30,9 +30,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         let alertPresenter = AlertPresenter()
         alertPresenter.delegate = self
         self.alertPresenter = alertPresenter
-        
-//        // подключаем StatisticService
-//        statisticService = StatisticServiceImplementation()
 
         // настраиваем рамку картинки
         imageView.layer.masksToBounds = true // даём разрешение на рисование рамки
@@ -78,9 +75,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
 
             // вызываем алерт
             let bestGame = statisticService.bestGame
-            let msgCurrentResult = "Ваш результат: \(correctAnswers) из \(questionsAmount)\n"
-            let msgGamesPlayed = "Количество сыгранных квизов: \(statisticService.gamesCount)\n"
-            let msgBestGame = "Рекорд: \(bestGame.correct) из \(bestGame.total) (\(bestGame.date))\n"
+            let msgCurrentResult = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
+            let msgGamesPlayed = "Количество сыгранных квизов: \(statisticService.gamesCount)"
+            let msgBestGame = "Рекорд: \(bestGame.correct) из \(bestGame.total) (\(bestGame.date))"
             let msgTotalAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             alertPresenter?.showAlert(alert: Alert(
                 title: "Раунд окончен",
