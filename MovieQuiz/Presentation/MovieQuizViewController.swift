@@ -75,13 +75,14 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
 
             // вызываем алерт
             let bestGame = statisticService.bestGame
-            let msgCurrentResult = "Ваш результат: \(correctAnswers) из \(questionsAmount)"
-            let msgGamesPlayed = "Количество сыгранных квизов: \(statisticService.gamesCount)"
-            let msgBestGame = "Рекорд: \(bestGame.correct) из \(bestGame.total) (\(bestGame.date))"
-            let msgTotalAccuracy = "Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%"
             alertPresenter?.showAlert(alert: Alert(
                 title: "Раунд окончен",
-                message: "\(msgCurrentResult)\n\(msgGamesPlayed)\n\(msgBestGame)\n\(msgTotalAccuracy)",
+                message: """
+                    Ваш результат: \(correctAnswers) из \(questionsAmount)
+                    Количество сыгранных квизов: \(statisticService.gamesCount)
+                    Рекорд: \(bestGame.correct) из \(bestGame.total) (\(bestGame.date))
+                    Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
+                """,
                 buttonText: "Сыграть ещё раз",
                 completion: { [weak self] in
                     guard let self else { return }
