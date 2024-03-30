@@ -10,7 +10,7 @@ import UIKit
 class AlertPresenter: AlertPresenterProtocol {
     
     weak var delegate: AlertPresenterDelegate?
-
+    
     func showAlert(alert: Alert) {
         let alertController = UIAlertController(
             title: alert.title,
