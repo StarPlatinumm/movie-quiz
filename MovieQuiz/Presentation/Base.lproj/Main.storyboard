@@ -131,6 +131,7 @@
                         <outlet property="activityIndicator" destination="JhY-N4-gng" id="TFg-SF-n23"/>
                         <outlet property="counterLabel" destination="Zpb-5H-3md" id="tjD-wv-HHc"/>
                         <outlet property="imageView" destination="99Q-PJ-lvz" id="d7F-Ca-Zu9"/>
+                        <outlet property="mainStackView" destination="3FW-Hv-0xC" id="Zlk-8c-jyB"/>
                         <outlet property="noButton" destination="C8n-Lo-Q8A" id="SbR-K4-beT"/>
                         <outlet property="textLabel" destination="lob-WN-HwO" id="aG3-J4-EJT"/>
                         <outlet property="yesButton" destination="0mr-5l-fPu" id="Mgp-fe-y7V"/>

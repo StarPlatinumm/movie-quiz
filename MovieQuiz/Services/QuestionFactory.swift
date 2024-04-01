@@ -26,8 +26,12 @@ class QuestionFactory: QuestionFactoryProtocol {
                 guard let self = self else { return }
                 switch result {
                 case .success(let mostPopularMovies):
-                    self.movies = mostPopularMovies.items // сохраняем фильм в нашу новую переменную
-                    self.delegate?.didLoadDataFromServer() // сообщаем, что данные загрузились
+                    if mostPopularMovies.errorMessage != "" {
+                        self.delegate?.didFailToLoadData(with: mostPopularMovies.errorMessage) // сообщаем об ошибке нашему MovieQuizViewController
+                    } else {
+                        self.movies = mostPopularMovies.items // сохраняем фильм в нашу новую переменную
+                        self.delegate?.didLoadDataFromServer() // сообщаем, что данные загрузились
+                    }
                 case .failure(let error):
                     self.delegate?.didFailToLoadData(with: error) // сообщаем об ошибке нашему MovieQuizViewController
                 }

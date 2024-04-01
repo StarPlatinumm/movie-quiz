@@ -6,6 +6,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private weak var textLabel: UILabel!
     @IBOutlet private weak var counterLabel: UILabel!
     
+    @IBOutlet weak var mainStackView: UIStackView!
     @IBOutlet private weak var yesButton: UIButton!
     @IBOutlet private weak var noButton: UIButton!
     
@@ -40,9 +41,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         imageView.layer.borderWidth = 8 // толщина рамки
         imageView.layer.borderColor = UIColor.ypBlack.cgColor // делаем рамку черной (невидимой)
         imageView.layer.cornerRadius = 20 // радиус скругления углов рамки
-        
-        yesButton.isHidden = true
-        noButton.isHidden = true
     }
     
     // нажатие кнопки "Да"
@@ -155,27 +153,26 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         if value {
             activityIndicator.isHidden = false
             activityIndicator.startAnimating()
+            mainStackView.isHidden = true
         } else {
             activityIndicator.isHidden = true
             activityIndicator.stopAnimating()
-            yesButton.isHidden = false
-            noButton.isHidden = false
+            mainStackView.isHidden = false
         }
         
     }
     
     private func showNetworkError(message: String) {
-        showLoadingIndicator(false)
+//        showLoadingIndicator(false)
         
         let alert = Alert(title: "Ошибка",
                           message: message,
                           buttonText: "Попробовать еще раз") { [weak self] in
             guard let self = self else { return }
             
-            self.currentQuestionIndex = 0
-            self.correctAnswers = 0
-            
-            self.questionFactory?.requestNextQuestion()
+            // пробуем загрузить данные ещё раз
+            showLoadingIndicator(true)
+            questionFactory?.loadData()
         }
         
         alertPresenter?.showAlert(alert: alert)
