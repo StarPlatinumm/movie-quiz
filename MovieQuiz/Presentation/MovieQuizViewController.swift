@@ -151,11 +151,9 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     
     private func showLoadingIndicator(_ value: Bool) {
         if value {
-            activityIndicator.isHidden = false
             activityIndicator.startAnimating()
             mainStackView.isHidden = true
         } else {
-            activityIndicator.isHidden = true
             activityIndicator.stopAnimating()
             mainStackView.isHidden = false
         }
@@ -163,8 +161,6 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     }
     
     private func showNetworkError(message: String) {
-//        showLoadingIndicator(false)
-        
         let alert = Alert(title: "Ошибка",
                           message: message,
                           buttonText: "Попробовать еще раз") { [weak self] in
