@@ -87,6 +87,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                     Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
                 """,
                 buttonText: "Сыграть ещё раз",
+                alertId: "Game results",
                 completion: { [weak self] in
                     guard let self else { return }
                     
@@ -163,7 +164,8 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     private func showNetworkError(message: String) {
         let alert = Alert(title: "Ошибка",
                           message: message,
-                          buttonText: "Попробовать еще раз") { [weak self] in
+                          buttonText: "Попробовать еще раз",
+                          alertId: nil) { [weak self] in
             guard let self = self else { return }
             
             // пробуем загрузить данные ещё раз
