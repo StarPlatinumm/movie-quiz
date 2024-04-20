@@ -13,13 +13,12 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     
     private var correctAnswers: Int = 0
-    private let questionsAmount: Int = 10
-    private var currentQuestionIndex: Int = 0
     private var currentQuestion: QuizQuestion?
     private var questionFactory: QuestionFactoryProtocol?
     private var alertPresenter: AlertPresenterProtocol?
     private var statisticService: StatisticServiceProtocol = StatisticServiceImplementation()
     private var moviesLoader: MoviesLoader = MoviesLoader()
+    private let presenter = MovieQuizPresenter()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -70,18 +69,18 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
     // приватный метод, который содержит логику перехода в один из сценариев
     // метод ничего не принимает и ничего не возвращает
     private func showNextQuestionOrResults() {
-        if currentQuestionIndex == questionsAmount - 1 {
+        if presenter.isLastQuestion() {
             // идём в состояние "Результат квиза"
             
             // сохраняем результат
-            statisticService.store(correct: correctAnswers, total: questionsAmount)
+            statisticService.store(correct: correctAnswers, total: presenter.questionsAmount)
             
             // вызываем алерт
             let bestGame = statisticService.bestGame
             alertPresenter?.showAlert(alert: Alert(
                 title: "Раунд окончен",
                 message: """
-                    Ваш результат: \(correctAnswers) из \(questionsAmount)
+                    Ваш результат: \(correctAnswers) из \(presenter.questionsAmount)
                     Количество сыгранных квизов: \(statisticService.gamesCount)
                     Рекорд: \(bestGame.correct) из \(bestGame.total) (\(bestGame.date))
                     Средняя точность: \(String(format: "%.2f", statisticService.totalAccuracy))%
@@ -91,26 +90,17 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
                 completion: { [weak self] in
                     guard let self else { return }
                     
-                    self.currentQuestionIndex = 0
+                    presenter.resetQuestionIndex()
                     self.correctAnswers = 0
                     
                     questionFactory?.requestNextQuestion()
                 }))
         } else {
-            currentQuestionIndex += 1
+            presenter.switchToNextQuestion()
             // идём в состояние "Вопрос показан"
             questionFactory?.requestNextQuestion()
         }
         enableButtons(true) // разблокируем кнопки
-    }
-    
-    // метод конвертации, который принимает моковый вопрос и возвращает вью модель для экрана вопроса
-    private func convert(model: QuizQuestion) -> QuizStepViewModel {
-        return QuizStepViewModel(
-            image: UIImage(data: model.image) ?? UIImage(),
-            question: model.text,
-            questionNumber: "\(currentQuestionIndex + 1)/\(questionsAmount)"
-        )
     }
     
     // приватный метод вывода на экран вопроса, который принимает на вход вью модель вопроса и ничего не возвращает
@@ -133,7 +123,7 @@ final class MovieQuizViewController: UIViewController, QuestionFactoryDelegate, 
         guard let question = question else { return }
         
         currentQuestion = question
-        let viewModel = convert(model: question)
+        let viewModel = presenter.convert(model: question)
         
         DispatchQueue.main.async { [weak self] in
             self?.showQuestion(quiz: viewModel)
