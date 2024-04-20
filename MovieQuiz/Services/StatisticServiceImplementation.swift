@@ -55,7 +55,7 @@ class StatisticServiceImplementation: StatisticServiceProtocol {
         get {
             guard let data = userDefaults.data(forKey: Keys.bestGame.rawValue),
                   let record = try? JSONDecoder().decode(GameRecord.self, from: data) else {
-                return .init(correct: 0, total: 0, date: Date().dateTimeString)
+                return .init(correct: 0, total: 0, date: Date())
             }
             
             return record
@@ -77,7 +77,7 @@ class StatisticServiceImplementation: StatisticServiceProtocol {
         questionsCount += amount
         totalAccuracy = Double(correctCount) / Double(questionsCount) * 100
         
-        let game = GameRecord(correct: count, total: amount, date: Date().dateTimeString)
+        let game = GameRecord(correct: count, total: amount, date: Date())
         if game.isBetterThan(bestGame) {
             bestGame = game
         }
