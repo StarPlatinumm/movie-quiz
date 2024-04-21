@@ -8,7 +8,7 @@
 import XCTest // не забывайте импортировать фреймворк для тестирования
 @testable import MovieQuiz // импортируем приложение для тестирования
 
-class MoviesLoaderTests: XCTestCase {
+final class MoviesLoaderTests: XCTestCase {
     struct StubNetworkClient: NetworkRouting {
         
         enum TestError: Error { // тестовая ошибка

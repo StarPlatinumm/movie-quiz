@@ -7,7 +7,7 @@
 
 import UIKit
 
-class QuestionFactory: QuestionFactoryProtocol {
+final class QuestionFactory: QuestionFactoryProtocol {
     
     private weak var delegate: QuestionFactoryDelegate?
     

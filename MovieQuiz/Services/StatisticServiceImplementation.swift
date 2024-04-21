@@ -7,7 +7,7 @@
 
 import Foundation
 
-class StatisticServiceImplementation: StatisticServiceProtocol {
+final class StatisticServiceImplementation: StatisticServiceProtocol {
     
     private let userDefaults = UserDefaults.standard
     
